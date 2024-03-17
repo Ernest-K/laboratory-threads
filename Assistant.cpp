@@ -19,11 +19,12 @@ Assistant::Assistant(int id, int position, int food)
 	this->food = food;
 	this->minFoodLevel = 25;
 	this->foodCapacity = 50;
-
+	this->direction = -1;
 }
 
-void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor)
+void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::mutex& mtxCorridor, std::vector<int>& corridor)
 {
+	std::srand(std::time(nullptr));
 	while (true) {
 		if (needRefill() && distributor.isFree()) {
 			mtxDistributor.lock();
@@ -33,9 +34,30 @@ void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor)
 			mtxDistributor.unlock();
 		}
 
+		if (canMoveUp(corridor) && direction == -1) {
+			mtxCorridor.lock();
+			moveUp(corridor);
+			mtxCorridor.unlock();
+		}
+		else if (canMoveDown(corridor) && direction == 1) {
+			mtxCorridor.lock();
+			moveDown(corridor);
+			mtxCorridor.unlock();
+		}
+
+		cout << "Assistant number: " << id << endl;
+
+		for (int element : corridor) {
+			std::cout << element << " ";
+		}
+		std::cout << std::endl;
+
+
 		this->feed();
 
-		this_thread::sleep_for(100ms);
+		int randomMilliseconds = std::rand() % 401 + 800;
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(randomMilliseconds));
 	}
 }
 
@@ -64,4 +86,34 @@ void Assistant::refill()
 	std::cout<< this->id << "\trefill" << endl;
 	this_thread::sleep_for(10ms * (this->foodCapacity - this->food));
 	this->food = 50;
+}
+
+void Assistant::moveUp(std::vector<int>& corridor) {
+	corridor[(position)] = -1;
+	corridor[(position - 1)] = id;
+	this->position = (this->position - 1);
+}
+
+void Assistant::moveDown(std::vector<int>& corridor) {
+	corridor[(position)] = -1;
+	corridor[(position + 1)] = id;
+	this->position = (this->position + 1);
+}
+
+bool Assistant::canMoveUp(std::vector<int>& corridor) {
+	if (position - 1 >= 0 && corridor[(position - 1)] == -1) {
+		return true;
+	}
+
+	this->direction = 1;
+	return false;
+}
+
+bool Assistant::canMoveDown(std::vector<int>& corridor) {
+	if (position + 1 < corridor.size() && corridor[(position + 1)] == -1) {
+		return true;
+	}
+
+	this->direction = -1;
+	return false;
 }
