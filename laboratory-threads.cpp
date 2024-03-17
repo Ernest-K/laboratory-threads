@@ -20,24 +20,12 @@ int main()
     std::vector<Assistant> assistants;
     std::vector<std::thread> assistantThreads;
 
+    std::vector<Organism> organisms;
+    std::vector<std::thread> organismThreads;
+
     int numberOfPositions = 10;
     std::vector<int> corridor(numberOfPositions, -1);
-
     std::vector<int> bowl(numberOfPositions, 10);
-
-    //Assistant a1(1, 0, 40);
-    //Assistant a2(2, 1, 40);
-    //Assistant a3(3, 2, 40);
-
-    //std::thread t1(&Assistant::work, &a1, std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor), std::ref(mtx_bowl), std::ref(bowl));
-    //std::thread t2(&Assistant::work, &a2, std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor), std::ref(mtx_bowl), std::ref(bowl));
-    //std::thread t3(&Assistant::work, &a3, std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor), std::ref(mtx_bowl), std::ref(bowl));
-
-
-    //t1.join();
-    //t2.join();
-    //t3.join();
-
 
 
     for (int i = 0; i < numberOfAssistants; ++i) {
@@ -45,22 +33,21 @@ int main()
     }
 
     for (int i = 0; i < numberOfAssistants; ++i) {
-        assistantThreads.push_back(std::thread(&Assistant::work, &assistants[i], std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor), std::ref(mtx_bowl), std::ref(bowl)));
+        assistantThreads.push_back(std::thread(&Assistant::work, &assistants[i], std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor), std::ref(mtx_bowl), std::ref(bowl), std::ref(organisms)));
     }
 
     for (int i = 0; i < numberOfAssistants; ++i) {
         corridor[i] = i + 1;
     }
 
-    std::vector<Organism> organism;
-    std::vector<std::thread> organismThreads;
+
 
     for (int i = 0; i < numberOfPositions; ++i) {
-        organism.push_back(Organism(i, 10));
+        organisms.push_back(Organism(i, 5));
     }
 
     for (int i = 0; i < numberOfPositions; ++i) {
-        organismThreads.push_back(std::thread(&Organism::work, &organism[i], std::ref(mtx_bowl), std::ref(bowl[i])));
+        organismThreads.push_back(std::thread(&Organism::work, &organisms[i], std::ref(mtx_bowl), std::ref(bowl[i])));
     }
 
     for (int i = 0; i < numberOfPositions; ++i) {

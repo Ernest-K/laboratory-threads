@@ -5,6 +5,7 @@
 #include <chrono>
 #include <iostream>
 #include <mutex>
+#include "Organism.h"
 
 using namespace std;
 
@@ -22,7 +23,7 @@ Assistant::Assistant(int id, int position, int food)
 	this->direction = -1;
 }
 
-void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::mutex& mtxCorridor, std::vector<int>& corridor, std::mutex& mtxBowl, std::vector<int>& bowl)
+void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::mutex& mtxCorridor, std::vector<int>& corridor, std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Organism>& organisms)
 {
 	std::srand(std::time(nullptr));
 	while (true) {
@@ -45,7 +46,7 @@ void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::
 			mtxCorridor.unlock();
 		}
 
-		this->feed(mtxBowl, bowl);
+		this->feed(mtxBowl, bowl, organisms);
 	}
 }
 
@@ -60,8 +61,12 @@ bool Assistant::needRefill()
 }
 
 // TO DO ZMIANY
-void Assistant::feed(std::mutex& mtxBowl, std::vector<int>& bowl)
+void Assistant::feed(std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Organism>& organisms)
 {
+	if (bowl[position] > 5 || organisms[position].stamina == 0) {
+		return;
+	}
+
 	int foodToGive = 10 - bowl[position];
 
 	if (food >= foodToGive) {

@@ -2,6 +2,7 @@
 #include <mutex>
 #include <vector>
 #include "Distributor.h"
+#include "Organism.h"
 
 
 class Assistant
@@ -17,9 +18,9 @@ class Assistant
 
 		Assistant();
 		Assistant(int id, int position, int food);
-		void work(std::mutex& mtxDistributor, Distributor& distributor, std::mutex& mtxCorridor, std::vector<int>& corridor, std::mutex& mtxBowl, std::vector<int>& bowl);
+		void work(std::mutex& mtxDistributor, Distributor& distributor, std::mutex& mtxCorridor, std::vector<int>& corridor, std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Organism>& organisms);
 		bool needRefill();
-		void feed(std::mutex& mtxBowl, std::vector<int>& bowl);
+		void feed(std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Organism>& organisms);
 		void refill();
 		void moveUp(std::vector<int>& corridor);
 		void moveDown(std::vector<int>& corridor);
