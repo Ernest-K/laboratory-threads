@@ -2,6 +2,7 @@
 
 #include <mutex>
 #include <vector>
+#include <iostream>
 
 class Organism
 {
@@ -11,6 +12,6 @@ class Organism
 
 		Organism();
 		Organism(int id, int stamina);
-		void work(std::mutex& mtxBowl, std::vector<int>& bowl);
+		void work(std::mutex& mtxBowl, int& bowl);
 };
 

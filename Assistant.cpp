@@ -45,7 +45,7 @@ void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::
 			mtxCorridor.unlock();
 		}
 
-		this->feed();
+		this->feed(mtxBowl, bowl);
 	}
 }
 
@@ -60,13 +60,18 @@ bool Assistant::needRefill()
 }
 
 // TO DO ZMIANY
-void Assistant::feed()
+void Assistant::feed(std::mutex& mtxBowl, std::vector<int>& bowl)
 {
-	if (this->food - 4 >= 0) {
-		this->food -= 4;
-		std::cout << this->id << "\tfeed" << this->food << endl;
+	int foodToGive = 10 - bowl[position];
+
+	if (food >= foodToGive) {
+		bowl[position] = 10;
+		food -= foodToGive;
 	}
-	this_thread::sleep_for(100ms);
+	else {
+		bowl[position] += food;
+		food = 0;
+	}
 }
 
 void Assistant::refill()

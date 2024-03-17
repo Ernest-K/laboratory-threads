@@ -23,7 +23,7 @@ int main()
     int numberOfPositions = 10;
     std::vector<int> corridor(numberOfPositions, -1);
 
-    std::vector<int> bowl(numberOfPositions, -1);
+    std::vector<int> bowl(numberOfPositions, 10);
 
     //Assistant a1(1, 0, 40);
     //Assistant a2(2, 1, 40);
@@ -52,10 +52,6 @@ int main()
         corridor[i] = i + 1;
     }
 
-    for (int i = 0; i < numberOfAssistants; ++i) {
-        assistantThreads[i].join();
-    }
-
     std::vector<Organism> organism;
     std::vector<std::thread> organismThreads;
 
@@ -64,11 +60,15 @@ int main()
     }
 
     for (int i = 0; i < numberOfPositions; ++i) {
-        organismThreads.push_back(std::thread(&Organism::work, &organism[i], std::ref(mtx_bowl), std::ref(bowl)));
+        organismThreads.push_back(std::thread(&Organism::work, &organism[i], std::ref(mtx_bowl), std::ref(bowl[i])));
     }
 
     for (int i = 0; i < numberOfPositions; ++i) {
         organismThreads[i].join();
+    }
+
+    for (int i = 0; i < numberOfAssistants; ++i) {
+        assistantThreads[i].join();
     }
 }
 
