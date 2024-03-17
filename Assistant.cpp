@@ -12,7 +12,7 @@ Assistant::Assistant()
 {
 }
 
-Assistant::Assistant(int id, int position, int food)
+Assistant::Assistant(int id, int position, int food) : id(id), position(position), food(food)
 {
 	this->id = id;
 	this->position = position;

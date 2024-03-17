@@ -130,10 +130,12 @@
     <ClCompile Include="Assistant.cpp" />
     <ClCompile Include="Distributor.cpp" />
     <ClCompile Include="laboratory-threads.cpp" />
+    <ClCompile Include="Organism.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assistant.h" />
     <ClInclude Include="Distributor.h" />
+    <ClInclude Include="Organism.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

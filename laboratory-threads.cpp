@@ -10,19 +10,22 @@
 
 int main()
 {
-    int numberOfAssistants = 3;
-    int numberOfPositions = 10;
-    std::vector<Assistant> assistants(numberOfAssistants);
-    std::vector<int> corridor(numberOfPositions, -1);
-
     std::mutex mtx_distributor, mtx_corridor;
+
     Distributor distributor;
+
+    int numberOfAssistants = 3;
+    std::vector<Assistant> assistants(numberOfAssistants);
+    std::vector<std::thread> assistantThreads(numberOfAssistants);
+
+    int numberOfPositions = 10;
+    std::vector<int> corridor(numberOfPositions, -1);
 
     Assistant a1(1, 0, 40);
     Assistant a2(2, 1, 40);
     Assistant a3(3, 2, 40);
 
-    std::thread t1(&Assistant::work, &a1, std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor) , std::ref(corridor));
+    std::thread t1(&Assistant::work, &a1, std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor));
     std::thread t2(&Assistant::work, &a2, std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor));
     std::thread t3(&Assistant::work, &a3, std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor));
 
