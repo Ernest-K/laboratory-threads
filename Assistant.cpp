@@ -12,7 +12,7 @@ Assistant::Assistant()
 {
 }
 
-Assistant::Assistant(int id, int position, int food) : id(id), position(position), food(food)
+Assistant::Assistant(int id, int position, int food)
 {
 	this->id = id;
 	this->position = position;
@@ -22,7 +22,7 @@ Assistant::Assistant(int id, int position, int food) : id(id), position(position
 	this->direction = -1;
 }
 
-void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::mutex& mtxCorridor, std::vector<int>& corridor)
+void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::mutex& mtxCorridor, std::vector<int>& corridor, std::mutex& mtxBowl, std::vector<int>& bowl)
 {
 	std::srand(std::time(nullptr));
 	while (true) {

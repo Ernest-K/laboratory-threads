@@ -5,37 +5,71 @@
 #include <thread>
 #include <mutex>
 #include "Assistant.h"
+#include "Organism.h"
 #include <vector>
 #include "Distributor.h"
+#include "chuj.h"
 
 int main()
 {
-    std::mutex mtx_distributor, mtx_corridor;
+    std::mutex mtx_distributor, mtx_corridor, mtx_bowl;
 
     Distributor distributor;
 
     int numberOfAssistants = 3;
-    std::vector<Assistant> assistants(numberOfAssistants);
-    std::vector<std::thread> assistantThreads(numberOfAssistants);
+    std::vector<Assistant> assistants;
+    std::vector<std::thread> assistantThreads;
 
     int numberOfPositions = 10;
     std::vector<int> corridor(numberOfPositions, -1);
 
-    Assistant a1(1, 0, 40);
-    Assistant a2(2, 1, 40);
-    Assistant a3(3, 2, 40);
+    std::vector<int> bowl(numberOfPositions, -1);
 
-    std::thread t1(&Assistant::work, &a1, std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor));
-    std::thread t2(&Assistant::work, &a2, std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor));
-    std::thread t3(&Assistant::work, &a3, std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor));
+    //Assistant a1(1, 0, 40);
+    //Assistant a2(2, 1, 40);
+    //Assistant a3(3, 2, 40);
 
-    corridor[0] = 1;
-    corridor[1] = 2;
-    corridor[2] = 3;
+    //std::thread t1(&Assistant::work, &a1, std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor), std::ref(mtx_bowl), std::ref(bowl));
+    //std::thread t2(&Assistant::work, &a2, std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor), std::ref(mtx_bowl), std::ref(bowl));
+    //std::thread t3(&Assistant::work, &a3, std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor), std::ref(mtx_bowl), std::ref(bowl));
 
-    t1.join();
-    t2.join();
-    t3.join();
+
+    //t1.join();
+    //t2.join();
+    //t3.join();
+
+
+
+    for (int i = 0; i < numberOfAssistants; ++i) {
+        assistants.push_back(Assistant(i + 1, i, 40));
+    }
+
+    for (int i = 0; i < numberOfAssistants; ++i) {
+        assistantThreads.push_back(std::thread(&Assistant::work, &assistants[i], std::ref(mtx_distributor), std::ref(distributor), std::ref(mtx_corridor), std::ref(corridor), std::ref(mtx_bowl), std::ref(bowl)));
+    }
+
+    for (int i = 0; i < numberOfAssistants; ++i) {
+        corridor[i] = i + 1;
+    }
+
+    for (int i = 0; i < numberOfAssistants; ++i) {
+        assistantThreads[i].join();
+    }
+
+    std::vector<Organism> organism;
+    std::vector<std::thread> organismThreads;
+
+    for (int i = 0; i < numberOfPositions; ++i) {
+        organism.push_back(Organism(i, 10));
+    }
+
+    for (int i = 0; i < numberOfPositions; ++i) {
+        organismThreads.push_back(std::thread(&Organism::work, &organism[i], std::ref(mtx_bowl), std::ref(bowl)));
+    }
+
+    for (int i = 0; i < numberOfPositions; ++i) {
+        organismThreads[i].join();
+    }
 }
 
 // Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania

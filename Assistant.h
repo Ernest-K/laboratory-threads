@@ -14,11 +14,10 @@ class Assistant
 		int foodCapacity;
 		int position;
 		int direction;
-		std::mutex mtxDistributor, mtxCorridor;
 
 		Assistant();
 		Assistant(int id, int position, int food);
-		void work(std::mutex& mtxDistributor, Distributor& distributor, std::mutex& mtxCorridor, std::vector<int>& corridor);
+		void work(std::mutex& mtxDistributor, Distributor& distributor, std::mutex& mtxCorridor, std::vector<int>& corridor, std::mutex& mtxBowl, std::vector<int>& bowl);
 		bool needRefill();
 		void feed();
 		void refill();
