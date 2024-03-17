@@ -45,19 +45,7 @@ void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::
 			mtxCorridor.unlock();
 		}
 
-		cout << "Assistant number: " << id << endl;
-
-		for (int element : corridor) {
-			std::cout << element << " ";
-		}
-		std::cout << std::endl;
-
-
 		this->feed();
-
-		int randomMilliseconds = std::rand() % 401 + 800;
-
-		std::this_thread::sleep_for(std::chrono::milliseconds(randomMilliseconds));
 	}
 }
 
@@ -92,15 +80,31 @@ void Assistant::moveUp(std::vector<int>& corridor) {
 	corridor[(position)] = -1;
 	corridor[(position - 1)] = id;
 	this->position = (this->position - 1);
+
+	cout << "Assistant number: " << id << endl;
+
+	for (int element : corridor) {
+		std::cout << element << " ";
+	}
+	std::cout << std::endl;
 }
 
 void Assistant::moveDown(std::vector<int>& corridor) {
 	corridor[(position)] = -1;
 	corridor[(position + 1)] = id;
 	this->position = (this->position + 1);
+
+	cout << "Assistant number: " << id << endl;
+
+	for (int element : corridor) {
+		std::cout << element << " ";
+	}
+	std::cout << std::endl;
 }
 
 bool Assistant::canMoveUp(std::vector<int>& corridor) {
+	int randomMilliseconds = std::rand() % 401 + 800;
+	std::this_thread::sleep_for(std::chrono::milliseconds(randomMilliseconds));
 	if (position - 1 >= 0 && corridor[(position - 1)] == -1) {
 		return true;
 	}
@@ -110,6 +114,8 @@ bool Assistant::canMoveUp(std::vector<int>& corridor) {
 }
 
 bool Assistant::canMoveDown(std::vector<int>& corridor) {
+	int randomMilliseconds = std::rand() % 401 + 800;
+	std::this_thread::sleep_for(std::chrono::milliseconds(randomMilliseconds));
 	if (position + 1 < corridor.size() && corridor[(position + 1)] == -1) {
 		return true;
 	}
