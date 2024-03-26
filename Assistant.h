@@ -3,6 +3,7 @@
 #include <vector>
 #include "Distributor.h"
 #include "Organism.h"
+#include "ScreenDrawer.h"
 
 
 class Assistant
