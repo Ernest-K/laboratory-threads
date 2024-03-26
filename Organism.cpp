@@ -1,4 +1,6 @@
 #include "Organism.h"
+#include <thread>
+#include <chrono>
 
 Organism::Organism()
 {
@@ -24,6 +26,6 @@ void Organism::work(std::mutex& mtxBowl, int& bowl)
 			bowl--;
 			mtxBowl.unlock();
 		}
-		std::cout << "Bowl number " << id << " " << bowl << " stamina: " << stamina << std::endl;
+		//std::cout << "Bowl number " << id << " " << bowl << " stamina: " << stamina << std::endl;
 	}
 }

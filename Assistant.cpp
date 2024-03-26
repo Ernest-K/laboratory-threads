@@ -5,6 +5,7 @@
 #include <chrono>
 #include <iostream>
 #include <mutex>
+#include <ncurses.h>
 #include "Organism.h"
 
 using namespace std;
@@ -21,6 +22,12 @@ Assistant::Assistant(int id, int position, int food)
 	this->minFoodLevel = 25;
 	this->foodCapacity = 50;
 	this->direction = -1;
+}
+
+void Assistant::drawFrame(int y, int x, const std::string& content) {
+	mvaddch(y, x, '|'); // Lewy bok ramki
+	mvprintw(y, x + 1, "%s", content.c_str()); // Zawartość ramki
+	mvaddch(y, x + content.length() + 1, '|'); // Prawy bok ramki
 }
 
 void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::mutex& mtxCorridor, std::vector<int>& corridor, std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Organism>& organisms)
@@ -54,7 +61,7 @@ void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::
 bool Assistant::needRefill()
 {
 	if (food < minFoodLevel) {
-		std::cout << this->id << "\tneed refill" << endl;
+		//std::cout << this->id << "\tneed refill" << endl;
 		return true;
 	}
 	return false;
@@ -81,7 +88,7 @@ void Assistant::feed(std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Or
 
 void Assistant::refill()
 {
-	std::cout<< this->id << "\trefill" << endl;
+	//std::cout<< this->id << "\trefill" << endl;
 	this_thread::sleep_for(10ms * (this->foodCapacity - this->food));
 	this->food = 50;
 }
@@ -91,12 +98,17 @@ void Assistant::moveUp(std::vector<int>& corridor) {
 	corridor[(position - 1)] = id;
 	this->position = (this->position - 1);
 
-	cout << "Assistant number: " << id << endl;
-
-	for (int element : corridor) {
-		std::cout << element << " ";
+	mvprintw(1, 13, "Workers:\n");
+	for (int i = 0; i < corridor.size(); ++i) {
+		if (corridor[i] != -1) {
+			drawFrame(2 + i, 15, std::to_string(corridor[i])); // Rysowanie ramki z zawartością
+		}
+		else {
+			drawFrame(2 + i, 15, " "); // Rysowanie pustej ramki
+		}
 	}
-	std::cout << std::endl;
+
+	refresh(); // Odświeżenie ekranu
 }
 
 void Assistant::moveDown(std::vector<int>& corridor) {
@@ -104,12 +116,17 @@ void Assistant::moveDown(std::vector<int>& corridor) {
 	corridor[(position + 1)] = id;
 	this->position = (this->position + 1);
 
-	cout << "Assistant number: " << id << endl;
-
-	for (int element : corridor) {
-		std::cout << element << " ";
+	mvprintw(1, 13, "Workers:\n");
+	for (int i = 0; i < corridor.size(); ++i) {
+		if (corridor[i] != -1) {
+			drawFrame(2 + i, 15, std::to_string(corridor[i])); // Rysowanie ramki z zawartością
+		}
+		else {
+			drawFrame(2 + i, 15, " "); // Rysowanie pustej ramki
+		}
 	}
-	std::cout << std::endl;
+
+	refresh(); // Odświeżenie ekranu
 }
 
 bool Assistant::canMoveUp(std::vector<int>& corridor) {

@@ -1,6 +1,6 @@
 ﻿// laboratory-threads.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
 //
-
+#include <ncurses.h>
 #include <iostream>
 #include <thread>
 #include <mutex>
@@ -9,6 +9,12 @@
 #include <vector>
 #include "Distributor.h"
 #include "chuj.h"
+
+void drawFrame(int y, int x, const std::string& content) {
+    mvaddch(y, x, '|'); // Lewy bok ramki
+    mvprintw(y, x + 1, "%s", content.c_str()); // Zawartość ramki
+    mvaddch(y, x + content.length() + 1, '|'); // Prawy bok ramki
+}
 
 int main()
 {
@@ -40,6 +46,17 @@ int main()
         corridor[i] = i + 1;
     }
 
+    initscr(); // Inicjalizacja ekranu ncurses
+    mvprintw(1, 13, "Workers:\n");
+    for (int i = 0; i < corridor.size(); ++i) {
+        if (corridor[i] != -1) {
+            drawFrame(2 + i, 15, std::to_string(corridor[i])); // Rysowanie ramki z zawartością
+        } else {
+            drawFrame(2 + i, 15, " "); // Rysowanie pustej ramki
+        }
+    }
+
+    refresh(); // Odświeżenie ekranu
 
 
     for (int i = 0; i < numberOfPositions; ++i) {

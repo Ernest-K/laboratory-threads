@@ -20,6 +20,7 @@ class Assistant
 		Assistant(int id, int position, int food);
 		void work(std::mutex& mtxDistributor, Distributor& distributor, std::mutex& mtxCorridor, std::vector<int>& corridor, std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Organism>& organisms);
 		bool needRefill();
+		void drawFrame(int y, int x, const std::string& content);
 		void feed(std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Organism>& organisms);
 		void refill();
 		void moveUp(std::vector<int>& corridor);
