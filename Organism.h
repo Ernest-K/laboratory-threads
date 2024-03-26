@@ -3,6 +3,7 @@
 #include <mutex>
 #include <vector>
 #include <iostream>
+#include <ncurses.h>
 
 class Organism
 {

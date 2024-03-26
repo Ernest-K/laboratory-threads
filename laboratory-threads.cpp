@@ -45,14 +45,16 @@ int main()
         corridor[i] = i + 1;
     }
 
-    initscr();
-    ScreenDrawer sc;
-    sc.drawCorridor(corridor, bowl);
-
-
     for (int i = 0; i < numberOfPositions; ++i) {
         organisms.push_back(Organism(i, 5));
     }
+
+    initscr();
+    mvprintw(6, 5, "|   |");
+    ScreenDrawer sc;
+    sc.drawCorridor(corridor);
+    sc.drawBowls(bowl);
+    sc.drawOrganisms(organisms);
 
     for (int i = 0; i < numberOfPositions; ++i) {
         organismThreads.push_back(std::thread(&Organism::work, &organisms[i], std::ref(mtx_bowl), std::ref(bowl[i])));

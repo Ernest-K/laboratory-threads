@@ -1,4 +1,5 @@
 #pragma once
+#include <ncurses.h>
 class Distributor
 {
 	public:

@@ -20,12 +20,15 @@ void Organism::work(std::mutex& mtxBowl, int& bowl)
 		std::this_thread::sleep_for(std::chrono::milliseconds(randomMilliseconds));
 		if (bowl == 0) {
 			stamina--;
+			mvprintw(0, 45, "Stamina:");
+			mvprintw(2 + id, 45, " | %d | ", stamina);
 		}
 		if (bowl > 0) {
 			mtxBowl.lock();
 			bowl--;
+			mvprintw(0, 30, "Bowls:");
+			mvprintw(2 + id, 30, " | %d | ", bowl);
 			mtxBowl.unlock();
 		}
-		//std::cout << "Bowl number " << id << " " << bowl << " stamina: " << stamina << std::endl;
 	}
 }

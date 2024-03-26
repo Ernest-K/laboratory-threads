@@ -10,10 +10,12 @@ bool Distributor::isFree()
 
 void Distributor::occupy(int assistantId)
 {
+	mvprintw(6, 5, "| %d |", assistantId);
 	this->occupiedBy = assistantId;
 }
 
 void Distributor::release()
 {
+	mvprintw(6, 5, "|   |");
 	this->occupiedBy = -1;
 }
