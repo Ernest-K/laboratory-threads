@@ -7,6 +7,7 @@
 #include <mutex>
 #include <ncurses.h>
 #include "Organism.h"
+#include "ScreenDrawer.h"
 
 using namespace std;
 
@@ -22,12 +23,6 @@ Assistant::Assistant(int id, int position, int food)
 	this->minFoodLevel = 25;
 	this->foodCapacity = 50;
 	this->direction = -1;
-}
-
-void Assistant::drawFrame(int y, int x, const std::string& content) {
-	mvaddch(y, x, '|'); // Lewy bok ramki
-	mvprintw(y, x + 1, "%s", content.c_str()); // Zawartość ramki
-	mvaddch(y, x + content.length() + 1, '|'); // Prawy bok ramki
 }
 
 void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::mutex& mtxCorridor, std::vector<int>& corridor, std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Organism>& organisms)
@@ -98,17 +93,8 @@ void Assistant::moveUp(std::vector<int>& corridor) {
 	corridor[(position - 1)] = id;
 	this->position = (this->position - 1);
 
-	mvprintw(1, 13, "Workers:\n");
-	for (int i = 0; i < corridor.size(); ++i) {
-		if (corridor[i] != -1) {
-			drawFrame(2 + i, 15, std::to_string(corridor[i])); // Rysowanie ramki z zawartością
-		}
-		else {
-			drawFrame(2 + i, 15, " "); // Rysowanie pustej ramki
-		}
-	}
-
-	refresh(); // Odświeżenie ekranu
+	initscr();
+	sc.drawCorridor(corridor);
 }
 
 void Assistant::moveDown(std::vector<int>& corridor) {
@@ -116,17 +102,8 @@ void Assistant::moveDown(std::vector<int>& corridor) {
 	corridor[(position + 1)] = id;
 	this->position = (this->position + 1);
 
-	mvprintw(1, 13, "Workers:\n");
-	for (int i = 0; i < corridor.size(); ++i) {
-		if (corridor[i] != -1) {
-			drawFrame(2 + i, 15, std::to_string(corridor[i])); // Rysowanie ramki z zawartością
-		}
-		else {
-			drawFrame(2 + i, 15, " "); // Rysowanie pustej ramki
-		}
-	}
-
-	refresh(); // Odświeżenie ekranu
+	initscr();
+	sc.drawCorridor(corridor);
 }
 
 bool Assistant::canMoveUp(std::vector<int>& corridor) {

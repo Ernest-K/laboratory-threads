@@ -15,6 +15,7 @@ class Assistant
 		int foodCapacity;
 		int position;
 		int direction;
+		ScreenDrawer sc;
 
 		Assistant();
 		Assistant(int id, int position, int food);
