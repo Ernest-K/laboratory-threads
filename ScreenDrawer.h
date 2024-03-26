@@ -5,7 +5,7 @@
 class ScreenDrawer
 {
 public:
-    void drawFrame(int y, int x, const std::string& content);
-    void drawCorridor(const std::vector<int>& corridor);
+    void drawFrame(int y, int x, const std::string& content1, const std::string& content2);
+    void drawCorridor(const std::vector<int>& corridor1, const std::vector<int>& corridor2);
 };
 

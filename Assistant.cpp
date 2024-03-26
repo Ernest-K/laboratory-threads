@@ -39,12 +39,12 @@ void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::
 
 		if (canMoveUp(corridor) && direction == -1) {
 			mtxCorridor.lock();
-			moveUp(corridor);
+			moveUp(corridor, bowl);
 			mtxCorridor.unlock();
 		}
 		else if (canMoveDown(corridor) && direction == 1) {
 			mtxCorridor.lock();
-			moveDown(corridor);
+			moveDown(corridor, bowl);
 			mtxCorridor.unlock();
 		}
 
@@ -88,22 +88,20 @@ void Assistant::refill()
 	this->food = 50;
 }
 
-void Assistant::moveUp(std::vector<int>& corridor) {
+void Assistant::moveUp(std::vector<int>& corridor, std::vector<int>& bowl) {
 	corridor[(position)] = -1;
 	corridor[(position - 1)] = id;
 	this->position = (this->position - 1);
 
-	initscr();
-	sc.drawCorridor(corridor);
+	sc.drawCorridor(corridor, bowl);
 }
 
-void Assistant::moveDown(std::vector<int>& corridor) {
+void Assistant::moveDown(std::vector<int>& corridor, std::vector<int>& bowl) {
 	corridor[(position)] = -1;
 	corridor[(position + 1)] = id;
 	this->position = (this->position + 1);
 
-	initscr();
-	sc.drawCorridor(corridor);
+	sc.drawCorridor(corridor, bowl);
 }
 
 bool Assistant::canMoveUp(std::vector<int>& corridor) {

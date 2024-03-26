@@ -47,19 +47,7 @@ int main()
 
     initscr();
     ScreenDrawer sc;
-    sc.drawCorridor(corridor);
-
-    //initscr(); // Inicjalizacja ekranu ncurses
-    //mvprintw(1, 13, "Workers:\n");
-    //for (int i = 0; i < corridor.size(); ++i) {
-    //    if (corridor[i] != -1) {
-    //        drawFrame(2 + i, 15, std::to_string(corridor[i])); // Rysowanie ramki z zawartością
-    //    } else {
-    //        drawFrame(2 + i, 15, " "); // Rysowanie pustej ramki
-    //    }
-    //}
-
-    //refresh(); // Odświeżenie ekranu
+    sc.drawCorridor(corridor, bowl);
 
 
     for (int i = 0; i < numberOfPositions; ++i) {
