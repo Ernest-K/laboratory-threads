@@ -56,13 +56,11 @@ void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::
 bool Assistant::needRefill()
 {
 	if (food < minFoodLevel) {
-		//std::cout << this->id << "\tneed refill" << endl;
 		return true;
 	}
 	return false;
 }
 
-// TO DO ZMIANY
 void Assistant::feed(std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Organism>& organisms)
 {
 	if (bowl[position] > 5 || organisms[position].stamina == 0) {
@@ -83,8 +81,7 @@ void Assistant::feed(std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Or
 
 void Assistant::refill()
 {
-	//std::cout<< this->id << "\trefill" << endl;
-	this_thread::sleep_for(10ms * (this->foodCapacity - this->food));
+	this_thread::sleep_for(100ms * (this->foodCapacity - this->food));
 	this->food = 50;
 }
 

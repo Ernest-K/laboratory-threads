@@ -50,6 +50,7 @@ int main()
     }
 
     initscr();
+    mvprintw(0, 2, "Distibutor:");
     mvprintw(6, 5, "|   |");
     ScreenDrawer sc;
     sc.drawCorridor(corridor);

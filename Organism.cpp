@@ -16,7 +16,7 @@ void Organism::work(std::mutex& mtxBowl, int& bowl)
 {
 	std::srand(std::time(nullptr));
 	while (stamina > 0) {
-		int randomMilliseconds = std::rand() % 401 + 800;
+		int randomMilliseconds = std::rand() % 801 + 1600;
 		std::this_thread::sleep_for(std::chrono::milliseconds(randomMilliseconds));
 		if (bowl == 0) {
 			stamina--;
