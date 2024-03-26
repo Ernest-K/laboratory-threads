@@ -32,7 +32,7 @@ void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::
 		if (needRefill() && distributor.isFree()) {
 			mtxDistributor.lock();
 			distributor.occupy(this->id);
-			refill();
+			refill(corridor);
 			distributor.release();
 			mtxDistributor.unlock();
 		}
@@ -48,7 +48,7 @@ void Assistant::work(std::mutex& mtxDistributor, Distributor& distributor, std::
 			mtxCorridor.unlock();
 		}
 
-		this->feed(mtxBowl, bowl, organisms);
+		this->feed(mtxBowl, bowl, organisms, corridor);
 	}
 }
 
@@ -61,7 +61,7 @@ bool Assistant::needRefill()
 	return false;
 }
 
-void Assistant::feed(std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Organism>& organisms)
+void Assistant::feed(std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Organism>& organisms, std::vector<int>& corridor)
 {
 	if (bowl[position] > 5 || organisms[position].stamina == 0) {
 		return;
@@ -77,12 +77,15 @@ void Assistant::feed(std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Or
 		bowl[position] += food;
 		food = 0;
 	}
+
+	sc.drawCorridor(corridor, this);
 }
 
-void Assistant::refill()
+void Assistant::refill(std::vector<int>& corridor)
 {
 	this_thread::sleep_for(100ms * (this->foodCapacity - this->food));
 	this->food = 50;
+	sc.drawCorridor(corridor, this);
 }
 
 void Assistant::moveUp(std::vector<int>& corridor) {
@@ -91,7 +94,7 @@ void Assistant::moveUp(std::vector<int>& corridor) {
 	this->position = (this->position - 1);
 
 	initscr();
-	sc.drawCorridor(corridor);
+	sc.drawCorridor(corridor, this);
 }
 
 void Assistant::moveDown(std::vector<int>& corridor) {
@@ -100,7 +103,7 @@ void Assistant::moveDown(std::vector<int>& corridor) {
 	this->position = (this->position + 1);
 
 	initscr();
-	sc.drawCorridor(corridor);
+	sc.drawCorridor(corridor, this);
 }
 
 bool Assistant::canMoveUp(std::vector<int>& corridor) {

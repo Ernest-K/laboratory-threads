@@ -4,12 +4,12 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
-#include "Assistant.h"
 #include "Organism.h"
 #include <vector>
 #include "Distributor.h"
 #include "chuj.h"
 #include "ScreenDrawer.h"
+#include "Assistant.h"
 
 void drawFrame(int y, int x, const std::string& content) {
     mvprintw(y, x, "| %s |", content.c_str());
@@ -34,7 +34,7 @@ int main()
 
 
     for (int i = 0; i < numberOfAssistants; ++i) {
-        assistants.push_back(Assistant(i + 1, i, 40));
+        assistants.push_back(Assistant(i + 1, i, 50));
     }
 
     for (int i = 0; i < numberOfAssistants; ++i) {

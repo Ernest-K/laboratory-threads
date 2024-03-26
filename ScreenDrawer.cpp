@@ -1,4 +1,5 @@
 #include "ScreenDrawer.h"
+#include "Assistant.h"
 #include "Organism.h"
 
 void ScreenDrawer::drawFrame(int y, int x, const std::string& content) {
@@ -39,6 +40,25 @@ void ScreenDrawer::drawOrganisms(const std::vector<Organism>& organisms) {
         }
         else {
             drawFrame(2 + i, 45, " ");
+        }
+    }
+    refresh();
+}
+
+void ScreenDrawer::drawFrame(int y, int x, const std::string& content, const std::string& content2) {
+    mvprintw(y, x, " | %s_%s | ", content.c_str(), content2.c_str());
+}
+
+void ScreenDrawer::drawCorridor(const std::vector<int>& corridor, Assistant* a) {
+    mvprintw(0, 15, "Workers:");
+    for (int i = 0; i < corridor.size(); ++i) {
+        if (corridor[i] != -1) {
+            if (a->position == i) {
+                drawFrame(2 + i, 15, std::to_string(corridor[i]), std::to_string(a->food));
+            }
+        }
+        else {
+            drawFrame(2 + i, 15, "    ");
         }
     }
     refresh();

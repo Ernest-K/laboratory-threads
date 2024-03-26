@@ -23,8 +23,8 @@ class Assistant
 		void work(std::mutex& mtxDistributor, Distributor& distributor, std::mutex& mtxCorridor, std::vector<int>& corridor, std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Organism>& organisms);
 		bool needRefill();
 		void drawFrame(int y, int x, const std::string& content);
-		void feed(std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Organism>& organisms);
-		void refill();
+		void feed(std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Organism>& organisms, std::vector<int>& corridor);
+		void refill(std::vector<int>& corridor);
 		void moveUp(std::vector<int>& corridor);
 		void moveDown(std::vector<int>& corridor);
 		bool canMoveUp(std::vector<int>& corridor);
