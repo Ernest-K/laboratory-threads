@@ -10,10 +10,10 @@ void ScreenDrawer::drawCorridor(const std::vector<int>& corridor) {
     mvprintw(0, 15, "Workers:");
     for (int i = 0; i < corridor.size(); ++i) {
         if (corridor[i] != -1) {
-            drawFrame(2 + i, 15, std::to_string(corridor[i]));
+            drawFrame(2 + i, 15, std::to_string(corridor[i]), "50");
         }
         else {
-            drawFrame(2 + i, 15, " ");
+            drawFrame(2 + i, 15, "    ");
         }
     }
     refresh();
