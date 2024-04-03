@@ -70,7 +70,7 @@ void Assistant::feed(std::mutex& mtxBowl, std::vector<int>& bowl, std::vector<Or
 	int foodToGive = 10 - bowl[position];
 
 	if (food >= foodToGive) {
-		bowl[position] = 10;
+		bowl[position] = 11;
 		food -= foodToGive;
 	}
 	else {

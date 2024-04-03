@@ -7,7 +7,6 @@
 #include "Organism.h"
 #include <vector>
 #include "Distributor.h"
-#include "chuj.h"
 #include "ScreenDrawer.h"
 #include "Assistant.h"
 
